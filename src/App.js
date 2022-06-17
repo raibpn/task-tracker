@@ -1,45 +1,26 @@
 import Header from "./components/Header";
 import Tasks from "./components/Tasks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddTask from "./components/AddTask";
 
 function App() {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      text: "Doctors Appointment",
-      day: "Feb 5th at 2:30 pm",
-      reminder: true,
-    },
-    {
-      id: 2,
-      text: "Meet Numa Rani",
-      day: "Feb 14th at 10 am",
-      reminder: true,
-    },
-    {
-      id: 3,
-      text: "Go to Meeting",
-      day: "Feb 5th at 9:30 am",
-      reminder: true,
-    },
-    {
-      id: 4,
-      text: "Go to Movie",
-      day: "Feb 10th at 2:30 pm",
-      reminder: true,
-    },
-    {
-      id: 5,
-      text: "Go to Walk",
-      day: "Feb 10th at 6:30 pm",
-      reminder: false,
-    },
-  ]);
+  const [tasks, setTasks] = useState([]);
+  useEffect(() => {
+    const getTasks = async () => {
+      const tasksFromServer = await fetchTasks();
+      setTasks(tasksFromServer);
+    };
+    getTasks().catch(console.error);
+  }, []);
+
+  const fetchTasks = async () => {
+    const res = await fetch("http://localhost:5000/tasks");
+    const data = await res.json();
+    return data;
+  };
 
   const [showAddTask, setShowAddTask] = useState(false);
-  const [btnColor, setBtnColor] = useState("green");
-  console.log("button color:", btnColor);
+  const [btnColor, setBtnColor] = useState("");
 
   const addTask = (task) => {
     const id = Math.floor(Math.random() * 10000) + 1;
