@@ -37,8 +37,11 @@ function App() {
     },
   ]);
 
+  const [showAddTask, setShowAddTask] = useState(false);
+  const [btnColor, setBtnColor] = useState("green");
+  console.log("button color:", btnColor);
+
   const addTask = (task) => {
-    // console.log("task created is:" + JSON.stringify(task));
     const id = Math.floor(Math.random() * 10000) + 1;
     const newTask = { id, ...task };
     setTasks([...tasks, newTask]);
@@ -54,13 +57,17 @@ function App() {
         tasks.id === id ? { ...tasks, reminder: !tasks.reminder } : tasks
       )
     );
-    console.log("tasks:" + JSON.stringify(tasks));
   };
 
   return (
     <div className="container">
-      <Header title={"Task Tracker"} />
-      <AddTask addTask={addTask} />
+      <Header
+        title={"Task Tracker"}
+        onAdd={() => setShowAddTask(!showAddTask)}
+        btncolor={btnColor}
+        showAdd={showAddTask}
+      />
+      {showAddTask && <AddTask addTask={addTask} />}
       {tasks?.length > 0 ? (
         <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} />
       ) : (
