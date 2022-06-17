@@ -2,9 +2,15 @@ import Header from "./components/Header";
 import Tasks from "./components/Tasks";
 import { useEffect, useState } from "react";
 import AddTask from "./components/AddTask";
+import Footer from "./components/Footer";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import About from "./components/About";
 
 function App() {
   const [tasks, setTasks] = useState([]);
+  const [showAddTask, setShowAddTask] = useState(false);
+  const [btnColor, setBtnColor] = useState("");
+
   useEffect(() => {
     const getTasks = async () => {
       const tasksFromServer = await fetchTasks();
@@ -18,9 +24,6 @@ function App() {
     const data = await res.json();
     return data;
   };
-
-  const [showAddTask, setShowAddTask] = useState(false);
-  const [btnColor, setBtnColor] = useState("");
 
   const addTask = async (task) => {
     // const id = Math.floor(Math.random() * 10000) + 1;
@@ -70,20 +73,38 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <Header
-        title={"Task Tracker"}
-        onAdd={() => setShowAddTask(!showAddTask)}
-        btncolor={btnColor}
-        showAdd={showAddTask}
-      />
-      {showAddTask && <AddTask addTask={addTask} />}
-      {tasks?.length > 0 ? (
-        <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} />
-      ) : (
-        "No Tasks"
-      )}
-    </div>
+    <Router>
+      <div className="container">
+        <Header
+          title={"Task Tracker"}
+          onAdd={() => setShowAddTask(!showAddTask)}
+          btncolor={btnColor}
+          showAdd={showAddTask}
+        />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                {showAddTask && <AddTask addTask={addTask} />}
+                {tasks?.length > 0 ? (
+                  <Tasks
+                    tasks={tasks}
+                    onDelete={deleteTask}
+                    onToggle={toggleReminder}
+                  />
+                ) : (
+                  "No Tasks"
+                )}
+              </>
+            }
+          ></Route>
+
+          <Route path="/about" element={<About />} />
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
