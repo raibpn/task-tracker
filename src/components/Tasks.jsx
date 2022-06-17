@@ -24,9 +24,21 @@ const tasks = [
     day: "Feb 10th at 2:30 pm",
     reminder: true,
   },
+  {
+    id: 5,
+    text: "Go to Walk",
+    day: "Feb 10th at 6:30 pm",
+    reminder: false,
+  },
 ];
 const Tasks = () => {
-  return <div></div>;
+  return (
+    <>
+      {tasks.map((tasks) => (
+        <h3 key={tasks.id}>{tasks.text}</h3>
+      ))}
+    </>
+  );
 };
 
 export default Tasks;
