@@ -25,10 +25,10 @@
       "reminder": true
     },
     {
-      "id": 5,
-      "text": "Go to Walk",
-      "day": "Feb 10th at 6:30 pm",
-      "reminder": false
+      "text": "Take Test",
+      "day": "Friday 5th 2pm",
+      "reminder": true,
+      "id": 5
     }
   ]
 }
